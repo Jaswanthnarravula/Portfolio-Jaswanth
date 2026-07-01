@@ -1,0 +1,30 @@
+<svg width="1200" height="760" viewBox="0 0 1200 760" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="760" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#00C7BE"/>
+      <stop offset="1" stop-color="#5E5CE6"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="760" fill="url(#bg)"/>
+  <rect x="80" y="72" width="1040" height="616" rx="30" fill="rgba(255,255,255,0.16)" stroke="rgba(255,255,255,0.46)"/>
+  <rect x="126" y="122" width="948" height="516" rx="24" fill="rgba(20, 24, 34, 0.28)"/>
+  <g stroke="rgba(255,255,255,0.38)" stroke-width="4">
+    <line x1="190" y1="170" x2="190" y2="590"/>
+    <line x1="318" y1="170" x2="318" y2="590"/>
+    <line x1="446" y1="170" x2="446" y2="590"/>
+    <line x1="574" y1="170" x2="574" y2="590"/>
+    <line x1="702" y1="170" x2="702" y2="590"/>
+    <line x1="830" y1="170" x2="830" y2="590"/>
+    <line x1="958" y1="170" x2="958" y2="590"/>
+    <line x1="158" y1="230" x2="1038" y2="230"/>
+    <line x1="158" y1="330" x2="1038" y2="330"/>
+    <line x1="158" y1="430" x2="1038" y2="430"/>
+    <line x1="158" y1="530" x2="1038" y2="530"/>
+  </g>
+  <path d="M212 546C280 470 350 464 432 500C508 534 588 534 668 476C732 430 792 380 880 390C936 396 980 430 1000 474" stroke="#FFFFFF" stroke-width="12" stroke-linecap="round"/>
+  <circle cx="212" cy="546" r="16" fill="#FFFFFF"/>
+  <circle cx="1000" cy="474" r="16" fill="#FFFFFF"/>
+  <text x="132" y="110" fill="white" fill-opacity="0.92" font-family="Inter, Arial, sans-serif" font-size="30" font-weight="700">Campus Indoor Navigation</text>
+  <text x="208" y="584" fill="white" fill-opacity="0.86" font-family="Inter, Arial, sans-serif" font-size="20">Start</text>
+  <text x="976" y="514" fill="white" fill-opacity="0.86" font-family="Inter, Arial, sans-serif" font-size="20" text-anchor="end">Destination</text>
+</svg>

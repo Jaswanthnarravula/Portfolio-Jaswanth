@@ -1,0 +1,31 @@
+{
+  "name": "jaswanth-cinematic-portfolio",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@react-three/drei": "^10.7.7",
+    "@react-three/fiber": "^9.5.0",
+    "@react-three/postprocessing": "^3.0.4",
+    "eslint-config-next": "^16.1.6",
+    "framer-motion": "^12.34.0",
+    "gsap": "^3.14.2",
+    "lucide-react": "^0.564.0",
+    "next": "^16.1.6",
+    "postprocessing": "^6.38.2",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "three": "^0.182.0"
+  },
+  "devDependencies": {
+    "@types/node": "^25.2.3",
+    "eslint": "^10.0.0",
+    "typescript": "^5.9.3"
+  }
+}

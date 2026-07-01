@@ -1,0 +1,24 @@
+<svg width="1200" height="760" viewBox="0 0 1200 760" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="760" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0071E3"/>
+      <stop offset="1" stop-color="#5E5CE6"/>
+    </linearGradient>
+    <linearGradient id="panel" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="white" stop-opacity="0.28"/>
+      <stop offset="1" stop-color="white" stop-opacity="0.08"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="760" fill="url(#bg)"/>
+  <rect x="72" y="68" width="1056" height="624" rx="30" fill="url(#panel)" stroke="rgba(255,255,255,0.5)"/>
+  <rect x="130" y="134" width="320" height="170" rx="20" fill="rgba(255,255,255,0.2)"/>
+  <rect x="130" y="334" width="320" height="296" rx="20" fill="rgba(255,255,255,0.14)"/>
+  <rect x="486" y="134" width="586" height="496" rx="20" fill="rgba(255,255,255,0.18)"/>
+  <path d="M530 512C598 448 664 444 736 486C808 528 876 524 944 458" stroke="white" stroke-width="12" stroke-linecap="round"/>
+  <circle cx="944" cy="458" r="14" fill="white"/>
+  <circle cx="736" cy="486" r="14" fill="white" fill-opacity="0.85"/>
+  <circle cx="530" cy="512" r="14" fill="white" fill-opacity="0.72"/>
+  <text x="130" y="108" fill="white" fill-opacity="0.92" font-family="Inter, Arial, sans-serif" font-size="30" font-weight="700">AI Task Scheduler Dashboard</text>
+  <text x="130" y="165" fill="white" fill-opacity="0.82" font-family="Inter, Arial, sans-serif" font-size="20">Prediction Accuracy</text>
+  <text x="514" y="173" fill="white" fill-opacity="0.82" font-family="Inter, Arial, sans-serif" font-size="20">Workload Projection</text>
+</svg>

@@ -1,0 +1,27 @@
+<svg width="1200" height="760" viewBox="0 0 1200 760" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="760" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#34C759"/>
+      <stop offset="1" stop-color="#007AFF"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="760" fill="url(#bg)"/>
+  <rect x="84" y="84" width="1032" height="592" rx="32" fill="rgba(255,255,255,0.16)" stroke="rgba(255,255,255,0.48)"/>
+  <g stroke="white" stroke-opacity="0.85" stroke-width="6">
+    <line x1="246" y1="240" x2="600" y2="178"/>
+    <line x1="246" y1="240" x2="600" y2="380"/>
+    <line x1="246" y1="240" x2="600" y2="572"/>
+    <line x1="954" y1="240" x2="600" y2="178"/>
+    <line x1="954" y1="240" x2="600" y2="380"/>
+    <line x1="954" y1="240" x2="600" y2="572"/>
+  </g>
+  <g fill="rgba(255,255,255,0.24)" stroke="white" stroke-opacity="0.78">
+    <rect x="170" y="186" width="152" height="108" rx="16"/>
+    <rect x="878" y="186" width="152" height="108" rx="16"/>
+    <rect x="514" y="124" width="172" height="108" rx="16"/>
+    <rect x="514" y="326" width="172" height="108" rx="16"/>
+    <rect x="514" y="518" width="172" height="108" rx="16"/>
+  </g>
+  <text x="130" y="132" fill="white" fill-opacity="0.92" font-family="Inter, Arial, sans-serif" font-size="30" font-weight="700">Distributed Storage Topology</text>
+  <text x="510" y="290" fill="white" fill-opacity="0.88" font-family="Inter, Arial, sans-serif" font-size="18">Consistent Hash Ring + Replication</text>
+</svg>

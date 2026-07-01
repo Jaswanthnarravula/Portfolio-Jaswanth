@@ -1,0 +1,52 @@
+<svg width="1400" height="900" viewBox="0 0 1400 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1400" y2="900" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FF9500"/>
+      <stop offset="1" stop-color="#FF2D55"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(1080 190) rotate(144) scale(520 380)">
+      <stop stop-color="white" stop-opacity="0.34"/>
+      <stop offset="1" stop-color="white" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="panel" x1="96" y1="84" x2="1306" y2="812" gradientUnits="userSpaceOnUse">
+      <stop stop-color="white" stop-opacity="0.26"/>
+      <stop offset="1" stop-color="white" stop-opacity="0.07"/>
+    </linearGradient>
+  </defs>
+  <rect width="1400" height="900" fill="url(#bg)"/>
+  <rect width="1400" height="900" fill="url(#glow)"/>
+  <rect x="84" y="76" width="1232" height="748" rx="34" fill="url(#panel)" stroke="white" stroke-opacity="0.46"/>
+
+  <text x="146" y="124" fill="white" fill-opacity="0.94" font-family="Inter, Arial, sans-serif" font-size="34" font-weight="700">Realtime Editor Snapshot 02</text>
+  <text x="146" y="174" fill="white" fill-opacity="0.84" font-family="Inter, Arial, sans-serif" font-size="22">Analytics Matrix</text>
+  <text x="1060" y="174" fill="white" fill-opacity="0.82" font-family="Inter, Arial, sans-serif" font-size="21">Result Surface RE-02</text>
+
+  <rect x="146" y="220" width="338" height="530" rx="24" fill="white" fill-opacity="0.14"/>
+  <circle cx="315" cy="380" r="106" stroke="white" stroke-opacity="0.32" stroke-width="24"/>
+  <path d="M315 274 A106 106 0 1 1 218 425" stroke="white" stroke-width="24" stroke-linecap="round"/>
+  <circle cx="315" cy="380" r="58" fill="white" fill-opacity="0.14"/>
+  <text x="268" y="388" fill="white" font-family="Inter, Arial, sans-serif" font-size="34" font-weight="700">87%</text>
+  <text x="218" y="462" fill="white" fill-opacity="0.8" font-family="Inter, Arial, sans-serif" font-size="18">replica confidence</text>
+
+  <rect x="188" y="525" width="254" height="16" rx="8" fill="white" fill-opacity="0.26"/>
+  <rect x="188" y="558" width="218" height="16" rx="8" fill="white" fill-opacity="0.22"/>
+  <rect x="188" y="591" width="238" height="16" rx="8" fill="white" fill-opacity="0.18"/>
+  <rect x="188" y="624" width="196" height="16" rx="8" fill="white" fill-opacity="0.2"/>
+
+  <rect x="524" y="220" width="730" height="300" rx="24" fill="white" fill-opacity="0.16"/>
+  <path d="M558 468L648 412L736 436L836 328L942 360L1044 300L1148 346L1226 268" stroke="white" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M558 468L648 412L736 436L836 328L942 360L1044 300L1148 346L1226 268L1226 496L558 496Z" fill="white" fill-opacity="0.12"/>
+  <circle cx="648" cy="412" r="10" fill="white"/>
+  <circle cx="836" cy="328" r="10" fill="white"/>
+  <circle cx="1044" cy="300" r="10" fill="white"/>
+  <circle cx="1226" cy="268" r="10" fill="white"/>
+
+  <rect x="524" y="544" width="730" height="206" rx="24" fill="white" fill-opacity="0.13"/>
+  <rect x="574" y="622" width="74" height="86" rx="12" fill="white" fill-opacity="0.32"/>
+  <rect x="680" y="590" width="74" height="118" rx="12" fill="white" fill-opacity="0.28"/>
+  <rect x="786" y="642" width="74" height="66" rx="12" fill="white" fill-opacity="0.26"/>
+  <rect x="892" y="566" width="74" height="142" rx="12" fill="white" fill-opacity="0.3"/>
+  <rect x="998" y="602" width="74" height="106" rx="12" fill="white" fill-opacity="0.27"/>
+  <rect x="1104" y="624" width="74" height="84" rx="12" fill="white" fill-opacity="0.24"/>
+  <path d="M560 708H1228" stroke="white" stroke-opacity="0.42" stroke-width="4" stroke-linecap="round"/>
+</svg>

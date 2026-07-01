@@ -1,0 +1,24 @@
+<svg width="420" height="420" viewBox="0 0 420 420" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="faceA" x1="89" y1="140" x2="288" y2="56" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#2563EB" stop-opacity="0.34"/>
+      <stop offset="1" stop-color="#60A5FA" stop-opacity="0.82"/>
+    </linearGradient>
+    <linearGradient id="faceB" x1="177" y1="260" x2="334" y2="324" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0EA5A3" stop-opacity="0.18"/>
+      <stop offset="1" stop-color="#14B8A6" stop-opacity="0.72"/>
+    </linearGradient>
+    <linearGradient id="faceC" x1="126" y1="184" x2="258" y2="338" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#F97316" stop-opacity="0.2"/>
+      <stop offset="1" stop-color="#FB923C" stop-opacity="0.66"/>
+    </linearGradient>
+  </defs>
+
+  <path d="M90 136L256 58L338 180L172 258L90 136Z" fill="url(#faceA)" stroke="rgba(37,99,235,0.44)"/>
+  <path d="M172 258L338 180L324 320L162 360L172 258Z" fill="url(#faceB)" stroke="rgba(20,184,166,0.42)"/>
+  <path d="M90 136L172 258L162 360L82 234L90 136Z" fill="url(#faceC)" stroke="rgba(249,115,22,0.38)"/>
+
+  <circle cx="250" cy="186" r="6" fill="#ffffff" fill-opacity="0.7"/>
+  <circle cx="171" cy="257" r="6" fill="#ffffff" fill-opacity="0.52"/>
+  <circle cx="161" cy="359" r="6" fill="#ffffff" fill-opacity="0.42"/>
+</svg>

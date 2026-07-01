@@ -1,0 +1,62 @@
+<svg width="1400" height="900" viewBox="0 0 1400 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1400" y2="900" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#00C7BE"/>
+      <stop offset="1" stop-color="#5E5CE6"/>
+    </linearGradient>
+    <linearGradient id="panel" x1="84" y1="76" x2="1316" y2="824" gradientUnits="userSpaceOnUse">
+      <stop stop-color="white" stop-opacity="0.25"/>
+      <stop offset="1" stop-color="white" stop-opacity="0.08"/>
+    </linearGradient>
+    <radialGradient id="pulse" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(234 248) rotate(46) scale(340 270)">
+      <stop stop-color="white" stop-opacity="0.3"/>
+      <stop offset="1" stop-color="white" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1400" height="900" fill="url(#bg)"/>
+  <rect width="1400" height="900" fill="url(#pulse)"/>
+  <rect x="84" y="76" width="1232" height="748" rx="34" fill="url(#panel)" stroke="white" stroke-opacity="0.44"/>
+
+  <text x="146" y="124" fill="white" fill-opacity="0.94" font-family="Inter, Arial, sans-serif" font-size="34" font-weight="700">Indoor Navigation Snapshot 03</text>
+  <text x="146" y="174" fill="white" fill-opacity="0.84" font-family="Inter, Arial, sans-serif" font-size="22">Failover Sandbox</text>
+  <text x="1048" y="174" fill="white" fill-opacity="0.82" font-family="Inter, Arial, sans-serif" font-size="21">Result Surface IN-03</text>
+
+  <rect x="146" y="220" width="774" height="530" rx="24" fill="white" fill-opacity="0.13"/>
+  <path d="M230 312L348 266L472 336L616 284L750 358L846 300" stroke="white" stroke-opacity="0.9" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M240 470L362 548L516 476L666 582L816 516" stroke="white" stroke-opacity="0.86" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M250 676L392 622L548 684L702 622L844 674" stroke="white" stroke-opacity="0.8" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <circle cx="230" cy="312" r="14" fill="white"/>
+  <circle cx="348" cy="266" r="14" fill="white" fill-opacity="0.9"/>
+  <circle cx="472" cy="336" r="14" fill="white" fill-opacity="0.88"/>
+  <circle cx="616" cy="284" r="14" fill="white" fill-opacity="0.9"/>
+  <circle cx="750" cy="358" r="14" fill="white" fill-opacity="0.92"/>
+  <circle cx="846" cy="300" r="14" fill="white"/>
+
+  <circle cx="240" cy="470" r="14" fill="white" fill-opacity="0.9"/>
+  <circle cx="362" cy="548" r="14" fill="white" fill-opacity="0.86"/>
+  <circle cx="516" cy="476" r="14" fill="white" fill-opacity="0.9"/>
+  <circle cx="666" cy="582" r="14" fill="white" fill-opacity="0.84"/>
+  <circle cx="816" cy="516" r="14" fill="white" fill-opacity="0.9"/>
+
+  <circle cx="250" cy="676" r="14" fill="white" fill-opacity="0.86"/>
+  <circle cx="392" cy="622" r="14" fill="white" fill-opacity="0.82"/>
+  <circle cx="548" cy="684" r="14" fill="white" fill-opacity="0.86"/>
+  <circle cx="702" cy="622" r="14" fill="white" fill-opacity="0.82"/>
+  <circle cx="844" cy="674" r="14" fill="white" fill-opacity="0.88"/>
+
+  <rect x="952" y="220" width="302" height="250" rx="24" fill="white" fill-opacity="0.16"/>
+  <text x="988" y="278" fill="white" fill-opacity="0.9" font-family="Inter, Arial, sans-serif" font-size="20">incident stream</text>
+  <rect x="988" y="304" width="228" height="14" rx="7" fill="white" fill-opacity="0.3"/>
+  <rect x="988" y="334" width="194" height="14" rx="7" fill="white" fill-opacity="0.26"/>
+  <rect x="988" y="364" width="236" height="14" rx="7" fill="white" fill-opacity="0.22"/>
+  <rect x="988" y="394" width="168" height="14" rx="7" fill="white" fill-opacity="0.24"/>
+
+  <rect x="952" y="494" width="302" height="256" rx="24" fill="white" fill-opacity="0.14"/>
+  <text x="988" y="552" fill="white" fill-opacity="0.9" font-family="Inter, Arial, sans-serif" font-size="20">recovery timeline</text>
+  <path d="M994 664H1218" stroke="white" stroke-opacity="0.36" stroke-width="4" stroke-linecap="round"/>
+  <path d="M1020 664V624" stroke="white" stroke-width="10" stroke-linecap="round"/>
+  <path d="M1090 664V590" stroke="white" stroke-width="10" stroke-linecap="round"/>
+  <path d="M1160 664V616" stroke="white" stroke-width="10" stroke-linecap="round"/>
+  <path d="M1230 664V560" stroke="white" stroke-width="10" stroke-linecap="round"/>
+</svg>
