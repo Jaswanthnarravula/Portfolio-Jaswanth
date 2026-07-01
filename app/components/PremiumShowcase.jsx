@@ -75,7 +75,7 @@ const showcaseSlides = [
   },
 ];
 
-const AUTOPLAY_MS = 3200;
+const AUTOPLAY_MS = 2400;
 
 /** Signed shortest circular distance from active, so the loop feels endless. */
 function signedOffset(index, active, count) {
@@ -346,8 +346,6 @@ export default function PremiumShowcase({ isMobile = false }) {
           glowX.set(0.5);
           glowY.set(0.5);
         }}
-        onMouseEnter={() => setIsPaused(true)}
-        onMouseLeave={() => setIsPaused(false)}
         style={{
           position: "relative",
           zIndex: 1,
@@ -393,7 +391,7 @@ export default function PremiumShowcase({ isMobile = false }) {
                 }}
                 initial={false}
                 animate={target}
-                transition={{ type: "spring", stiffness: 210, damping: 30, mass: 0.9 }}
+                transition={{ type: "spring", stiffness: 175, damping: 24, mass: 0.82 }}
                 whileHover={isActive && !reducedMotion ? { scale: 1.04, y: -8 } : undefined}
                 data-cursor="hover"
                 style={{
@@ -435,7 +433,7 @@ export default function PremiumShowcase({ isMobile = false }) {
                   <motion.div
                     aria-hidden
                     animate={{ opacity: isActive ? 1 : 0 }}
-                    transition={{ duration: 0.4 }}
+                    transition={{ duration: 0.32 }}
                     style={{
                       position: "absolute",
                       inset: 0,
@@ -462,7 +460,7 @@ export default function PremiumShowcase({ isMobile = false }) {
                         initial={{ opacity: 0, y: 16 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: 10 }}
-                        transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                        transition={{ duration: 0.32, ease: [0.16, 1, 0.3, 1] }}
                         style={{
                           position: "absolute",
                           left: 18,

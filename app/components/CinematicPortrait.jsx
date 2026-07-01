@@ -15,10 +15,8 @@ import { useRef } from "react";
 import PageContainer from "./PageContainer";
 import { primaryTechStack, profileIdentity } from "../data/profile";
 
-const PORTRAIT_SRC = "/profile/portrait.jpg";
-
 const previewChips = [
-  "MS Computer Science · UAB",
+  "MS Computer Science, UAB",
   "Open to Software Engineering roles",
   ...primaryTechStack.slice(0, 3),
 ];
@@ -32,55 +30,41 @@ export default function CinematicPortrait({ isMobile }) {
     offset: ["start end", "end start"],
   });
 
-  // Scroll-driven parallax — each layer moves at its own rate for real depth.
-  const ambientY = useTransform(scrollYProgress, [0, 1], [isMobile ? -20 : -60, isMobile ? 20 : 90]);
-  const echoY = useTransform(scrollYProgress, [0, 1], [isMobile ? 40 : 120, isMobile ? -40 : -120]);
-  const portraitY = useTransform(scrollYProgress, [0, 1], [isMobile ? 26 : 70, isMobile ? -26 : -80]);
-  const contentY = useTransform(scrollYProgress, [0, 1], [40, -48]);
-  const scrimOpacity = useTransform(scrollYProgress, [0, 0.5, 1], [0.62, 0.5, 0.82]);
-
-  // Pointer-driven parallax — springy follow for silky, weighted motion.
-  const px = useMotionValue(0);
-  const py = useMotionValue(0);
-  const sx = useSpring(px, { stiffness: 60, damping: 18, mass: 0.5 });
-  const sy = useSpring(py, { stiffness: 60, damping: 18, mass: 0.5 });
-
-  const r = isMobile ? 0 : 1;
-  const portraitTX = useTransform(sx, [-0.5, 0.5], [-18 * r, 18 * r]);
-  const portraitTY = useTransform(sy, [-0.5, 0.5], [-12 * r, 12 * r]);
-  const portraitRotY = useTransform(sx, [-0.5, 0.5], [8 * r, -8 * r]);
-  const portraitRotX = useTransform(sy, [-0.5, 0.5], [-6 * r, 6 * r]);
-  const echoTX = useTransform(sx, [-0.5, 0.5], [40 * r, -40 * r]);
-  const echoTY = useTransform(sy, [-0.5, 0.5], [26 * r, -26 * r]);
-  const orbOneX = useTransform(sx, [-0.5, 0.5], [-60 * r, 60 * r]);
-  const orbOneY = useTransform(sy, [-0.5, 0.5], [-40 * r, 40 * r]);
-  const orbTwoX = useTransform(sx, [-0.5, 0.5], [50 * r, -50 * r]);
-  const orbTwoY = useTransform(sy, [-0.5, 0.5], [36 * r, -36 * r]);
-  const contentTX = useTransform(sx, [-0.5, 0.5], [10 * r, -10 * r]);
-  const glareX = useTransform(sx, [-0.5, 0.5], ["30%", "70%"]);
-  const glareY = useTransform(sy, [-0.5, 0.5], ["30%", "70%"]);
-  const glareBg = useTransform(
-    [glareX, glareY],
-    ([gx, gy]) => `radial-gradient(60% 50% at ${gx} ${gy}, rgba(255,255,255,0.28), transparent 70%)`,
+  // Keep the parallax strictly downward so the top of the portrait (the head/hair)
+  // is never pulled above the frame. It eases down from a top-anchored start.
+  const imageParallaxY = useTransform(
+    scrollYProgress,
+    [0, 1],
+    [0, isMobile ? 22 : 80],
   );
+  const contentParallaxY = useTransform(scrollYProgress, [0, 1], [26, -42]);
+  const scrimOpacity = useTransform(scrollYProgress, [0, 0.5, 1], [0.72, 0.58, 0.82]);
+
+  const pointerX = useMotionValue(0);
+  const pointerY = useMotionValue(0);
+  const springX = useSpring(pointerX, { stiffness: 55, damping: 18, mass: 0.4 });
+  const springY = useSpring(pointerY, { stiffness: 55, damping: 18, mass: 0.4 });
+
+  const imageDriftX = useTransform(springX, [-0.5, 0.5], isMobile ? [0, 0] : [-16, 16]);
+  const imageDriftY = useTransform(springY, [-0.5, 0.5], isMobile ? [0, 0] : [-10, 10]);
+  const orbOneDrift = useTransform(springX, [-0.5, 0.5], isMobile ? [0, 0] : [-40, 40]);
+  const orbTwoDrift = useTransform(springY, [-0.5, 0.5], isMobile ? [0, 0] : [30, -30]);
+  const panelDriftX = useTransform(springX, [-0.5, 0.5], isMobile ? [0, 0] : [12, -12]);
+  const panelDriftY = useTransform(springY, [-0.5, 0.5], isMobile ? [0, 0] : [8, -8]);
 
   const handlePointerMove = (event) => {
-    if (isMobile) return;
+    if (isMobile) {
+      return;
+    }
     const rect = event.currentTarget.getBoundingClientRect();
-    px.set((event.clientX - rect.left) / rect.width - 0.5);
-    py.set((event.clientY - rect.top) / rect.height - 0.5);
-  };
-  const handlePointerLeave = () => {
-    px.set(0);
-    py.set(0);
+    pointerX.set((event.clientX - rect.left) / rect.width - 0.5);
+    pointerY.set((event.clientY - rect.top) / rect.height - 0.5);
   };
 
-  const reveal = (delay = 0) => ({
-    initial: { opacity: 0, y: 26 },
-    whileInView: { opacity: 1, y: 0 },
-    viewport: { once: true, amount: 0.3 },
-    transition: { duration: 0.85, ease: [0.16, 1, 0.3, 1], delay },
-  });
+  const handlePointerLeave = () => {
+    pointerX.set(0);
+    pointerY.set(0);
+  };
 
   return (
     <section
@@ -89,327 +73,329 @@ export default function CinematicPortrait({ isMobile }) {
       onPointerLeave={handlePointerLeave}
       style={{
         position: "relative",
-        minHeight: isMobile ? "auto" : "100vh",
+        minHeight: isMobile ? "auto" : "80vh",
         display: "flex",
         alignItems: "center",
         overflow: "hidden",
         isolation: "isolate",
-        background:
-          "radial-gradient(120% 120% at 78% 18%, #0a1226 0%, #05060d 52%, #030409 100%)",
-        paddingBlock: isMobile ? 72 : 0,
+        background: "#05060d",
       }}
     >
-      {/* Layer 0 — slowly rotating gradient mesh for living ambience */}
-      <div aria-hidden style={{ position: "absolute", inset: 0, zIndex: 0, overflow: "hidden", pointerEvents: "none" }}>
-        <div
-          className="cine-mesh"
-          style={{
-            position: "absolute",
-            inset: "-40%",
-            background:
-              "conic-gradient(from 0deg at 50% 50%, rgba(37,99,235,0.22), rgba(20,184,166,0.16), rgba(139,92,246,0.2), rgba(37,99,235,0.22))",
-            filter: "blur(90px)",
-            opacity: 0.7,
-          }}
-        />
-      </div>
-
-      {/* Layer 1 — blurred full-bleed ambient wash of the portrait (color only) */}
-      <motion.div
-        aria-hidden
-        style={{ position: "absolute", inset: -80, zIndex: 0, y: ambientY, pointerEvents: "none" }}
-      >
-        <div className="cine-breathe" style={{ position: "absolute", inset: 0 }}>
-          <Image
-            src={PORTRAIT_SRC}
-            alt=""
-            fill
-            aria-hidden
-            quality={40}
-            sizes="100vw"
-            style={{
-              objectFit: "cover",
-              objectPosition: "center 20%",
-              filter: "blur(46px) brightness(0.42) saturate(1.25)",
-              transform: "scale(1.15)",
-            }}
-          />
-        </div>
-      </motion.div>
-
-      {/* Layer 2 — glowing drifting orbs */}
-      <motion.div
-        aria-hidden
-        animate={prefersReducedMotion ? {} : { x: [-24, 34, -24], y: [0, -26, 0] }}
-        transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
-        style={{
-          position: "absolute", zIndex: 1, top: "-8%", left: isMobile ? "-20%" : "2%",
-          width: isMobile ? 260 : 480, height: isMobile ? 260 : 480, borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(37,99,235,0.5) 0%, transparent 70%)",
-          filter: "blur(60px)", mixBlendMode: "screen", x: orbOneX, y: orbOneY, pointerEvents: "none",
-        }}
-      />
-      <motion.div
-        aria-hidden
-        animate={prefersReducedMotion ? {} : { x: [10, -34, 10], y: [0, 28, 0] }}
-        transition={{ duration: 26, repeat: Infinity, ease: "easeInOut", delay: 1.4 }}
-        style={{
-          position: "absolute", zIndex: 1, bottom: "-14%", right: isMobile ? "-24%" : "4%",
-          width: isMobile ? 280 : 520, height: isMobile ? 280 : 520, borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(20,184,166,0.42) 0%, transparent 70%)",
-          filter: "blur(74px)", mixBlendMode: "screen", x: orbTwoX, y: orbTwoY, pointerEvents: "none",
-        }}
-      />
-
-      {/* Vignette for cinematic focus */}
+      {/* Top fade so this panel eases in from the section above */}
       <div
         aria-hidden
         style={{
-          position: "absolute", inset: 0, zIndex: 1, pointerEvents: "none",
-          background: "radial-gradient(130% 100% at 50% 40%, transparent 45%, rgba(2,3,8,0.7) 100%)",
+          position: "absolute",
+          inset: "0 0 auto 0",
+          height: isMobile ? 40 : 72,
+          background: "linear-gradient(180deg, var(--page-background) 0%, transparent 100%)",
+          zIndex: 5,
+          pointerEvents: "none",
         }}
       />
 
-      {/* Main composition */}
-      <PageContainer wide style={{ position: "relative", zIndex: 3 }}>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: isMobile ? "1fr" : "1.02fr 0.98fr",
-            alignItems: "center",
-            gap: isMobile ? 40 : 36,
-          }}
+      {/* Portrait — TRUE full-bleed background across the whole hero (no panel, no
+          seam). The darkening gradients below sit OVER this same continuous photo,
+          so the text side blends in smoothly. Anchored high so hair isn't cropped. */}
+      <motion.div
+        aria-hidden
+        initial={{ opacity: 0, scale: 1.04 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1] }}
+        style={{
+          position: "absolute",
+          top: -40,
+          bottom: -40,
+          right: 0,
+          width: isMobile ? "100%" : "52%",
+          zIndex: 1,
+          overflow: "hidden",
+          transformOrigin: "top center",
+          y: imageParallaxY,
+          // Feather the beige edge into the dark scene so there's no hard line
+          WebkitMaskImage: isMobile
+            ? "linear-gradient(180deg, rgba(0,0,0,1) 58%, transparent 100%)"
+            : "linear-gradient(90deg, transparent 0%, rgba(0,0,0,1) 32%)",
+          maskImage: isMobile
+            ? "linear-gradient(180deg, rgba(0,0,0,1) 58%, transparent 100%)"
+            : "linear-gradient(90deg, transparent 0%, rgba(0,0,0,1) 32%)",
+        }}
+      >
+        <motion.div
+          animate={prefersReducedMotion ? {} : { scale: [1, 1.03, 1] }}
+          transition={{ duration: 30, repeat: Infinity, ease: "easeInOut" }}
+          style={{ position: "absolute", inset: 0, transformOrigin: "center center" }}
         >
-          {/* ------- Text column ------- */}
-          <motion.div
-            style={{ y: contentY, x: contentTX, order: isMobile ? 2 : 1 }}
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.6 }}
-          >
-            <motion.p
-              {...reveal(0)}
-              style={{
-                margin: 0, display: "inline-flex", alignItems: "center", gap: 8, borderRadius: 999,
-                border: "1px solid rgba(255,255,255,0.28)", padding: "8px 14px",
-                background: "rgba(255,255,255,0.08)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)",
-                color: "#dbe4ff", fontSize: 12.5, fontWeight: 600, letterSpacing: "0.04em", textTransform: "uppercase",
-              }}
-            >
-              <Sparkles size={14} />
-              Design Concept · Cinematic Portrait Preview
-            </motion.p>
+          <Image
+            src="/profile/portrait.jpg"
+            alt={`${profileIdentity.name} portrait`}
+            fill
+            priority
+            quality={90}
+            sizes={isMobile ? "100vw" : "55vw"}
+            style={{ objectFit: "cover", objectPosition: isMobile ? "center 8%" : "center 16%" }}
+          />
+        </motion.div>
+      </motion.div>
 
-            <motion.h2 {...reveal(0.08)} style={{ margin: "20px 0 0" }}>
-              <span
-                style={{
-                  display: "block", fontSize: "clamp(40px, 7.6vw, 84px)", lineHeight: 0.98,
-                  letterSpacing: "-0.045em", fontWeight: 700, color: "#ffffff",
-                  textShadow: "0 14px 44px rgba(0,0,0,0.5)",
-                }}
-              >
-                {profileIdentity.name}
-              </span>
-            </motion.h2>
+      {/* Cinematic scrim — darkens the LEFT (text) side and dissolves seamlessly
+          into the photo on the right. One gradient over one photo = no edge. */}
+      <motion.div
+        aria-hidden
+        style={{
+          position: "absolute",
+          inset: 0,
+          background: isMobile
+            ? "linear-gradient(180deg, rgba(3,5,12,0.58) 0%, rgba(3,5,12,0.32) 34%, rgba(3,5,12,0.92) 100%)"
+            : "linear-gradient(90deg, rgba(3,5,12,0.95) 0%, rgba(3,5,12,0.88) 26%, rgba(3,5,12,0.55) 46%, rgba(3,5,12,0.16) 62%, transparent 80%)",
+          zIndex: 2,
+          pointerEvents: "none",
+        }}
+      />
+      <div
+        aria-hidden
+        style={{
+          position: "absolute",
+          inset: 0,
+          background:
+            "radial-gradient(135% 105% at 72% 34%, transparent 46%, rgba(2,4,10,0.5) 100%), linear-gradient(0deg, rgba(3,5,12,0.8) 0%, transparent 20%)",
+          zIndex: 2,
+          pointerEvents: "none",
+        }}
+      />
 
-            <motion.p
-              {...reveal(0.16)}
-              style={{
-                marginTop: 18, maxWidth: 560, color: "rgba(226,232,240,0.85)",
-                fontSize: "clamp(15px, 1.9vw, 19px)", lineHeight: 1.65,
-              }}
-            >
-              {profileIdentity.headline}
-            </motion.p>
+      {/* Glowing color-wash orbs for depth and premium ambience */}
+      <motion.div
+        aria-hidden
+        animate={prefersReducedMotion ? {} : { x: [-20, 30, -20], y: [0, -24, 0] }}
+        transition={{ duration: 19, repeat: Infinity, ease: "easeInOut" }}
+        style={{
+          position: "absolute",
+          top: "-10%",
+          left: "-8%",
+          width: isMobile ? 220 : 420,
+          height: isMobile ? 220 : 420,
+          borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(37,99,235,0.55) 0%, transparent 70%)",
+          filter: "blur(70px)",
+          mixBlendMode: "screen",
+          x: orbOneDrift,
+          zIndex: 1,
+          pointerEvents: "none",
+        }}
+      />
+      <motion.div
+        aria-hidden
+        animate={prefersReducedMotion ? {} : { x: [10, -30, 10], y: [0, 26, 0] }}
+        transition={{ duration: 24, repeat: Infinity, ease: "easeInOut", delay: 1.2 }}
+        style={{
+          position: "absolute",
+          bottom: "-14%",
+          right: "-6%",
+          width: isMobile ? 240 : 460,
+          height: isMobile ? 240 : 460,
+          borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(20,184,166,0.45) 0%, transparent 70%)",
+          filter: "blur(84px)",
+          mixBlendMode: "screen",
+          y: orbTwoDrift,
+          zIndex: 1,
+          pointerEvents: "none",
+        }}
+      />
 
-            <motion.div
-              {...reveal(0.24)}
-              style={{ marginTop: 28, display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}
-            >
-              <Link
-                href="/projects" data-cursor="hover"
-                style={{
-                  minHeight: 48, borderRadius: 999, padding: "12px 22px", display: "inline-flex",
-                  alignItems: "center", gap: 8, textDecoration: "none", background: "var(--accent-blue)",
-                  color: "#fff", fontWeight: 600, fontSize: 15, boxShadow: "0 16px 34px rgba(37,99,235,0.4)",
-                }}
-              >
-                Explore Projects
-                <ArrowRight size={16} />
-              </Link>
-              <Link
-                href={profileIdentity.githubUrl} target="_blank" rel="noreferrer" data-cursor="hover"
-                style={{
-                  minHeight: 48, borderRadius: 999, padding: "12px 22px", display: "inline-flex",
-                  alignItems: "center", gap: 8, textDecoration: "none", border: "1px solid rgba(255,255,255,0.3)",
-                  background: "rgba(255,255,255,0.08)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)",
-                  color: "#f8fafc", fontWeight: 500, fontSize: 15,
-                }}
-              >
-                <Github size={16} />
-                GitHub
-                <ExternalLink size={14} />
-              </Link>
-            </motion.div>
-
-            <motion.div {...reveal(0.32)} style={{ marginTop: 26, display: "flex", flexWrap: "wrap", gap: 10 }}>
-              {previewChips.map((chip, index) => (
-                <motion.span
-                  key={chip}
-                  animate={prefersReducedMotion ? {} : { y: [0, -6, 0] }}
-                  transition={{ duration: 3.6 + index * 0.35, repeat: Infinity, ease: "easeInOut", delay: index * 0.3 }}
-                  whileHover={{ scale: 1.07, backgroundColor: "rgba(255,255,255,0.18)" }}
-                  style={{
-                    borderRadius: 999, border: "1px solid rgba(255,255,255,0.22)", background: "rgba(255,255,255,0.07)",
-                    backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)", color: "#e2e8f0",
-                    padding: "7px 13px", fontSize: 12.5,
-                  }}
-                >
-                  {chip}
-                </motion.span>
-              ))}
-            </motion.div>
-          </motion.div>
-
-          {/* ------- Portrait column ------- */}
-          <div
-            style={{
-              order: isMobile ? 1 : 2,
-              perspective: 1400,
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <motion.div
-              style={{ position: "relative", y: portraitY, width: isMobile ? "min(340px, 82vw)" : "min(460px, 100%)" }}
-              initial={{ opacity: 0, scale: 0.9, y: 60 }}
-              whileInView={{ opacity: 1, scale: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
-            >
-              {/* Depth echo — blurred, tinted copy floating behind for 3D separation */}
-              <motion.div
-                aria-hidden
-                style={{
-                  position: "absolute", inset: "-6% -8%", zIndex: 0, borderRadius: 32,
-                  x: echoTX, y: echoTY, overflow: "hidden", opacity: 0.4, filter: "blur(14px)",
-                  transform: "scale(1.06)",
-                }}
-              >
-                <Image
-                  src={PORTRAIT_SRC} alt="" fill aria-hidden quality={40} sizes="480px"
-                  style={{ objectFit: "cover", objectPosition: "center top", filter: "saturate(1.4) hue-rotate(-8deg)" }}
-                />
-              </motion.div>
-
-              {/* Pulsing glow ring behind the frame */}
-              <div
-                aria-hidden className="cine-ring"
-                style={{
-                  position: "absolute", inset: "-14px", zIndex: 0, borderRadius: 36,
-                  background: "linear-gradient(140deg, rgba(37,99,235,0.55), rgba(20,184,166,0.4) 60%, rgba(139,92,246,0.5))",
-                  filter: "blur(22px)",
-                }}
-              />
-
-              {/* The sharp framed portrait — 4/5 frame guarantees full head + hair */}
-              <motion.div
-                style={{
-                  position: "relative", zIndex: 1, borderRadius: 26, overflow: "hidden",
-                  aspectRatio: "4 / 5", transformStyle: "preserve-3d",
-                  rotateX: portraitRotX, rotateY: portraitRotY, x: portraitTX, y: portraitTY,
-                  border: "1px solid rgba(255,255,255,0.18)",
-                  boxShadow: "0 40px 90px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.22)",
-                }}
-              >
-                <div className="cine-breathe" style={{ position: "absolute", inset: 0 }}>
-                  <Image
-                    src={PORTRAIT_SRC}
-                    alt={`${profileIdentity.name} portrait`}
-                    fill priority quality={90} sizes={isMobile ? "82vw" : "460px"}
-                    style={{ objectFit: "cover", objectPosition: "center top" }}
-                  />
-                </div>
-
-                {/* Cinematic color grade over the photo */}
-                <div
-                  aria-hidden
-                  style={{
-                    position: "absolute", inset: 0, pointerEvents: "none", mixBlendMode: "soft-light",
-                    background: "linear-gradient(150deg, rgba(37,99,235,0.5) 0%, transparent 45%, rgba(20,184,166,0.4) 100%)",
-                  }}
-                />
-                {/* Bottom gradient so the frame melts toward the dark scene */}
-                <div
-                  aria-hidden
-                  style={{
-                    position: "absolute", inset: 0, pointerEvents: "none",
-                    background: "linear-gradient(180deg, transparent 55%, rgba(3,5,12,0.6) 100%)",
-                  }}
-                />
-                {/* Pointer-tracked specular glare */}
-                <motion.div
-                  aria-hidden
-                  style={{
-                    position: "absolute", inset: 0, pointerEvents: "none", mixBlendMode: "screen",
-                    background: glareBg,
-                  }}
-                />
-                {/* Animated diagonal sheen sweeping across the frame */}
-                <div aria-hidden style={{ position: "absolute", inset: 0, overflow: "hidden", pointerEvents: "none" }}>
-                  <div
-                    className="cine-sheen"
-                    style={{
-                      position: "absolute", top: "-30%", bottom: "-30%", width: "45%", left: 0,
-                      background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent)",
-                      filter: "blur(6px)",
-                    }}
-                  />
-                </div>
-              </motion.div>
-            </motion.div>
-          </div>
-        </div>
-      </PageContainer>
-
-      {/* Film grain overlay */}
+      {/* Film-grain texture for a cinematic finish */}
       <motion.div
         aria-hidden
         animate={prefersReducedMotion ? {} : { opacity: [0.05, 0.09, 0.05] }}
         transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
         style={{
-          position: "absolute", inset: 0, zIndex: 4, pointerEvents: "none", mixBlendMode: "overlay",
+          position: "absolute",
+          inset: 0,
+          zIndex: 2,
+          pointerEvents: "none",
+          mixBlendMode: "overlay",
           backgroundImage:
             "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")",
         }}
       />
 
-      {/* Scroll-reactive base scrim */}
-      <motion.div
+      {/* Bottom fade so this panel eases into the section below */}
+      <div
         aria-hidden
         style={{
-          position: "absolute", inset: "auto 0 0 0", height: "40%", zIndex: 2, opacity: scrimOpacity, pointerEvents: "none",
-          background: "linear-gradient(0deg, #030409 0%, transparent 100%)",
+          position: "absolute",
+          inset: "auto 0 0 0",
+          height: isMobile ? 48 : 84,
+          background: "linear-gradient(0deg, var(--page-background) 0%, transparent 100%)",
+          zIndex: 5,
+          pointerEvents: "none",
         }}
       />
 
-      {/* Top & bottom fades so the panel blends with the page */}
-      <div
-        aria-hidden
-        style={{
-          position: "absolute", inset: "0 0 auto 0", height: isMobile ? 60 : 110, zIndex: 5, pointerEvents: "none",
-          background: "linear-gradient(180deg, var(--page-background) 0%, transparent 100%)",
-        }}
-      />
-      <div
-        aria-hidden
-        style={{
-          position: "absolute", inset: "auto 0 0 0", height: isMobile ? 70 : 130, zIndex: 5, pointerEvents: "none",
-          background: "linear-gradient(0deg, var(--page-background) 0%, transparent 100%)",
-        }}
-      />
+      {/* Foreground content */}
+      <PageContainer wide style={{ position: "relative", zIndex: 3, paddingBlock: isMobile ? 40 : 56 }}>
+        {/* Text — left ~25%, over the dark side of the scene */}
+        <motion.div
+          style={{ y: contentParallaxY, x: panelDriftX, maxWidth: isMobile ? "100%" : "52%" }}
+          initial={{ opacity: 0, y: 32 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+        >
+          <motion.p
+            initial={{ opacity: 0, y: 14 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            style={{
+              margin: 0,
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 8,
+              borderRadius: 999,
+              border: "1px solid rgba(255,255,255,0.3)",
+              padding: "8px 14px",
+              background: "rgba(255,255,255,0.1)",
+              backdropFilter: "blur(10px)",
+              WebkitBackdropFilter: "blur(10px)",
+              color: "#e2e8f0",
+              fontSize: 13,
+              fontWeight: 600,
+              letterSpacing: "0.03em",
+              textTransform: "uppercase",
+            }}
+          >
+            <Sparkles size={14} />
+            Design Concept &middot; Cinematic Portrait Preview
+          </motion.p>
+
+          <motion.h2
+            style={{ y: panelDriftY }}
+            initial={{ opacity: 0, y: 26 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
+          >
+            <span
+              style={{
+                display: "block",
+                margin: "18px 0 0",
+                fontSize: "clamp(38px, 8vw, 90px)",
+                lineHeight: 1.02,
+                letterSpacing: "-0.04em",
+                color: "#ffffff",
+                textShadow: "0 12px 40px rgba(0,0,0,0.45)",
+              }}
+            >
+              {profileIdentity.name}
+            </span>
+          </motion.h2>
+
+          <motion.p
+            initial={{ opacity: 0, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.85, ease: "easeOut", delay: 0.2 }}
+            style={{
+              marginTop: 16,
+              maxWidth: 720,
+              color: "rgba(226,232,240,0.86)",
+              fontSize: "clamp(15px, 1.9vw, 20px)",
+              lineHeight: 1.65,
+            }}
+          >
+            {profileIdentity.headline}
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.85, ease: "easeOut", delay: 0.3 }}
+            style={{ marginTop: 26, display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}
+          >
+            <Link
+              href="/projects"
+              data-cursor="hover"
+              style={{
+                minHeight: 48,
+                borderRadius: 999,
+                padding: "11px 21px",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 8,
+                textDecoration: "none",
+                background: "var(--accent-blue)",
+                color: "#ffffff",
+                fontWeight: 600,
+                fontSize: 15,
+                boxShadow: "0 14px 30px rgba(37,99,235,0.35)",
+              }}
+            >
+              Explore Projects
+              <ArrowRight size={16} />
+            </Link>
+            <Link
+              href={profileIdentity.githubUrl}
+              target="_blank"
+              rel="noreferrer"
+              data-cursor="hover"
+              style={{
+                minHeight: 48,
+                borderRadius: 999,
+                padding: "11px 21px",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 8,
+                textDecoration: "none",
+                border: "1px solid rgba(255,255,255,0.32)",
+                background: "rgba(255,255,255,0.08)",
+                backdropFilter: "blur(10px)",
+                WebkitBackdropFilter: "blur(10px)",
+                color: "#f8fafc",
+                fontWeight: 500,
+                fontSize: 15,
+              }}
+            >
+              <Github size={16} />
+              GitHub Profile
+              <ExternalLink size={14} />
+            </Link>
+          </motion.div>
+
+          <div style={{ marginTop: 28, display: "flex", flexWrap: "wrap", gap: 10 }}>
+            {previewChips.map((chip, index) => (
+              <motion.span
+                key={chip}
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                animate={prefersReducedMotion ? {} : { y: [0, -6, 0] }}
+                transition={{
+                  opacity: { duration: 0.5, delay: 0.4 + index * 0.06 },
+                  y: prefersReducedMotion
+                    ? { duration: 0.5, delay: 0.4 + index * 0.06 }
+                    : { duration: 3.6 + index * 0.4, repeat: Infinity, ease: "easeInOut", delay: index * 0.3 },
+                }}
+                whileHover={{ scale: 1.06, background: "rgba(255,255,255,0.16)" }}
+                style={{
+                  borderRadius: 999,
+                  border: "1px solid rgba(255,255,255,0.24)",
+                  background: "rgba(255,255,255,0.08)",
+                  backdropFilter: "blur(8px)",
+                  WebkitBackdropFilter: "blur(8px)",
+                  color: "#e2e8f0",
+                  padding: "7px 13px",
+                  fontSize: 13,
+                }}
+              >
+                {chip}
+              </motion.span>
+            ))}
+          </div>
+        </motion.div>
+      </PageContainer>
     </section>
   );
 }
