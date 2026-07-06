@@ -16,7 +16,9 @@ import {
   Zap,
 } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useIntro } from "./components/IntroProvider";
 import CinematicPortrait from "./components/CinematicPortrait";
+import FlagshipShowcase from "./components/FlagshipShowcase";
 import PageContainer from "./components/PageContainer";
 import PremiumShowcase from "./components/PremiumShowcase";
 import RingCarousel from "./components/RingCarousel";
@@ -126,10 +128,14 @@ export default function HomePage() {
     },
   });
   const { scrollY } = useScroll();
+  const { stage: introStage } = useIntro();
   const heroName = profileIdentity.name.toUpperCase();
   const pauseIndex =
     heroName.indexOf(" ") > -1 ? heroName.indexOf(" ") + 1 : Math.ceil(heroName.length / 2);
   const isMobile = viewportWidth < 768;
+  // Hold the hero typewriter until the hello curtain starts lifting, so the
+  // name types in view instead of finishing behind the intro.
+  const introWaiting = introStage === "hello";
 
   useEffect(() => {
     const syncViewport = () => setViewportWidth(window.innerWidth);
@@ -139,6 +145,10 @@ export default function HomePage() {
   }, []);
 
   useEffect(() => {
+    if (introWaiting) {
+      return undefined;
+    }
+
     let timeoutId;
     let cancelled = false;
     let index = 0;
@@ -163,13 +173,15 @@ export default function HomePage() {
       }, delay);
     };
 
-    typeNext(240);
+    typeNext(introStage === "reveal" ? 650 : 240);
 
     return () => {
       cancelled = true;
       window.clearTimeout(timeoutId);
     };
-  }, [heroName, pauseIndex]);
+    // introWaiting (not introStage) as dep: reveal -> done must not retype.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [heroName, pauseIndex, introWaiting]);
 
   useEffect(() => {
     const blinkInterval = window.setInterval(() => {
@@ -353,6 +365,18 @@ export default function HomePage() {
       </section>
 
       <CinematicPortrait isMobile={isMobile} />
+
+      {/* Pinned 3D horizontal journey through the three production systems */}
+      <section style={{ paddingBlock: isMobile ? 46 : 72 }}>
+        <PageContainer wide>
+          <SectionTitle
+            title="Production Systems"
+            subtitle="Three platforms engineered end to end and running in daily production at Xclusive Trading Inc. Keep scrolling — the stage travels with you."
+            marginBottom={isMobile ? 30 : 8}
+          />
+        </PageContainer>
+        <FlagshipShowcase isMobile={isMobile} />
+      </section>
 
       <section style={{ paddingBlock: isMobile ? 46 : 68 }}>
         <PageContainer wide>

@@ -1,0 +1,77 @@
+export const flagshipProjects = [
+  {
+    id: "activetrack",
+    index: "01",
+    name: "ActiveTrack",
+    kicker: "FastAPI Backend Platform",
+    tagline: "Workforce management backend with Azure AD SSO and real-time push.",
+    description:
+      "Enterprise-grade FastAPI backend serving every internal management tier at Xclusive Trading Inc in daily production use. Async-first APIs, WebSocket push notifications, and 4-tier RBAC enforced at the route level.",
+    highlights: [
+      "Azure AD SSO over OIDC with fallback to local JWT validation when the cloud is unreachable",
+      "WebSocket push with heartbeat + reconnection, degrading gracefully to polling",
+      "OAuth2 + RS256 JWT with 4-tier RBAC enforced at route level, not just UI",
+      "SQLAlchemy pooling with retry on transient failures, Alembic migrations",
+    ],
+    metrics: [
+      { value: "<200", unit: "ms", label: "p95 API latency" },
+      { value: "4", unit: "tier", label: "RBAC enforcement" },
+      { value: "100", unit: "%", label: "Mgmt tiers onboard" },
+    ],
+    stack: ["Python", "FastAPI", "PostgreSQL", "WebSockets", "Azure AD", "Docker"],
+    accent: "#3b82f6",
+    accentSoft: "rgba(59,130,246,0.16)",
+    gradient: "linear-gradient(135deg, #0b1226 0%, #12244f 52%, #0b3a86 100%)",
+    href: "/projects",
+  },
+  {
+    id: "xti-sales-hub",
+    index: "02",
+    name: "XTI Sales Hub",
+    kicker: "Full-Stack Sales Platform",
+    tagline: "React frontend + 6 Python microservices, live at xclusivetradinginc.cloud.",
+    description:
+      "Production sales platform used daily by the internal sales team. Six independently deployable microservices with isolated failure boundaries, idempotent ETL pipelines, and face-unlock biometric login.",
+    highlights: [
+      "6 microservices with independent failure boundaries — a crash in one never touches auth or ETL",
+      "Face-unlock biometric login via an OpenCV + face_recognition pipeline",
+      "Idempotent ETL upserts (Selenium + Beautiful Soup) — safe to replay after any failure",
+      "10+ modular React components with custom hooks and a command-palette UI",
+    ],
+    metrics: [
+      { value: "6", unit: "svc", label: "Microservices" },
+      { value: "10", unit: "+", label: "React components" },
+      { value: "24/7", unit: "", label: "Production SLA" },
+    ],
+    stack: ["React", "Vite", "Flask", "FastAPI", "PostgreSQL", "Selenium", "JWT"],
+    accent: "#14b8a6",
+    accentSoft: "rgba(20,184,166,0.16)",
+    gradient: "linear-gradient(135deg, #071d1c 0%, #0b3d38 52%, #0f766e 100%)",
+    href: "/projects",
+  },
+  {
+    id: "xclusiveid",
+    index: "03",
+    name: "XclusiveID",
+    kicker: "OAuth 2.1 + OIDC Identity Provider",
+    tagline: "Enterprise SSO built from scratch in Go — the standards Okta and Entra run on.",
+    description:
+      "Full OAuth 2.1 + OpenID Connect implementation in Go 1.22 — not a wrapper. PKCE flows, automatic JWKS key rotation, Argon2id hashing, and OWASP-hardened headers. The central SSO for every internal Xclusive application.",
+    highlights: [
+      "Authorization code flow with PKCE — eliminates the implicit-flow attack surface",
+      "RS256 signing with automatic key rotation and a JWKS endpoint for zero-downtime rollover",
+      "Argon2id at 64MB/3 iterations — GPU-resistant by configuration",
+      "4-tier RBAC with audit logs and an admin session-management panel",
+    ],
+    metrics: [
+      { value: "99.9", unit: "%", label: "Uptime target" },
+      { value: "15", unit: "+", label: "Integration examples" },
+      { value: "0", unit: "", label: "Shared secrets (RS256)" },
+    ],
+    stack: ["Go 1.22", "Chi v5", "PostgreSQL", "RS256 JWT", "Argon2id", "Nginx"],
+    accent: "#a78bfa",
+    accentSoft: "rgba(167,139,250,0.16)",
+    gradient: "linear-gradient(135deg, #16102e 0%, #2b1e5e 52%, #4c3095 100%)",
+    href: "/projects",
+  },
+];

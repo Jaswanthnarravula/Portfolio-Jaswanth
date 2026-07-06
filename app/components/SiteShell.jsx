@@ -2,11 +2,17 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { AnimatePresence, motion } from "framer-motion";
+import {
+  AnimatePresence,
+  motion,
+  useMotionValueEvent,
+  useScroll,
+} from "framer-motion";
 import { Github, Linkedin, Mail, Menu, Moon, Sun, X } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import FloatingDepthField from "./FloatingDepthField";
 import CustomCursor from "./CustomCursor";
+import { useIntro } from "./IntroProvider";
 import { siteNavigation } from "../data/navigation";
 import { profileIdentity, profileSocialLinks } from "../data/profile";
 
@@ -43,9 +49,18 @@ function NavLink({ href, label, active }) {
 
 export default function SiteShell({ children }) {
   const pathname = usePathname();
+  const { stage: introStage } = useIntro();
   const [isMobile, setIsMobile] = useState(true);
   const [menuOpen, setMenuOpen] = useState(false);
   const [theme, setTheme] = useState("light");
+  const [navHidden, setNavHidden] = useState(false);
+  const { scrollY } = useScroll();
+
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    const previous = scrollY.getPrevious() ?? 0;
+    // Hide when scrolling down past the hero, reveal instantly on any scroll up.
+    setNavHidden(latest > previous && latest > 320 && !menuOpen);
+  });
 
   useEffect(() => {
     const stored = window.localStorage?.getItem("color-mode");
@@ -108,20 +123,28 @@ export default function SiteShell({ children }) {
 
       <FloatingDepthField isMobile={isMobile} />
 
-      <header
+      <motion.header
+        initial={false}
+        animate={{ y: introStage === "hello" ? -120 : navHidden ? -110 : 0 }}
+        transition={
+          introStage === "reveal"
+            ? { duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.55 }
+            : { duration: 0.45, ease: [0.32, 0.72, 0, 1] }
+        }
         style={{
           position: "fixed",
           top: 12,
           left: "50%",
-          transform: "translateX(-50%)",
+          x: "-50%",
           width: "min(1240px, calc(100% - 20px))",
           zIndex: 1200,
           borderRadius: 999,
-          border: "1px solid rgba(210,210,215,0.9)",
+          border: "1px solid var(--border-light)",
           background: "var(--surface-card)",
           backdropFilter: "blur(20px) saturate(160%)",
           WebkitBackdropFilter: "blur(20px) saturate(160%)",
           boxShadow: "0 10px 28px rgba(0,0,0,0.08)",
+          willChange: "transform",
         }}
       >
         <div
@@ -283,7 +306,7 @@ export default function SiteShell({ children }) {
             </>
           )}
         </div>
-      </header>
+      </motion.header>
 
       <AnimatePresence>
         {menuOpen && isMobile ? (
@@ -328,7 +351,25 @@ export default function SiteShell({ children }) {
         ) : null}
       </AnimatePresence>
 
-      <div style={{ position: "relative", zIndex: 1, paddingTop: 96, paddingBottom: 30 }}>
+      {/* Parallax settle: the page waits slightly low and scaled behind the
+          curtain, then glides up as the hello curtain lifts. Plain CSS
+          transition so the transform fully clears once the intro is done. */}
+      <div
+        style={{
+          position: "relative",
+          zIndex: 1,
+          paddingTop: 96,
+          paddingBottom: 30,
+          transform:
+            introStage === "hello" ? "translateY(12vh) scale(0.985)" : "none",
+          transformOrigin: "50% 0%",
+          transition:
+            introStage === "reveal"
+              ? "transform 1.12s cubic-bezier(0.83, 0, 0.17, 1)"
+              : undefined,
+          willChange: introStage !== "done" ? "transform" : undefined,
+        }}
+      >
         {children}
       </div>
     </div>
